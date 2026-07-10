@@ -1,0 +1,60 @@
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+release/
+
+# Gradle files
+.gradle/
+build/
+app/build/
+
+# Local configuration file
+local.properties
+*.pro
+
+# Android Studio
+*.iml
+.idea/
+.DS_Store
+
+# NDK
+obj/
+.externalNativeBuild/
+.cxx/
+
+# Node.js (backend)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Python (ML)
+ml/venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Gradle wrapper JAR
+!gradle/wrapper/gradle-wrapper.jar

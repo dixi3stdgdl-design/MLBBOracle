@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MLBB Oracle</string>
+    <string name="accessibility_service_description">MLBB Oracle uses accessibility service to capture screen data for game analysis. This is non-intrusive and does not modify the game. The overlay shows real-time stats at the top of your screen without interfering with gameplay.</string>
+    <string name="overlay_channel_name">MLBB Oracle Overlay</string>
+    <string name="overlay_channel_description">Shows real-time game data during matches — compact, translucent, and non-intrusive</string>
+</resources>

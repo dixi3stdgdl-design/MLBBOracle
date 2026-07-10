@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="oracle_gold">#FFD700</color>
+    <color name="oracle_dark">#1A1A2E</color>
+    <color name="oracle_darker">#0F0F1A</color>
+    <color name="oracle_accent">#6C63FF</color>
+    <color name="oracle_success">#4CAF50</color>
+    <color name="oracle_warning">#FF9800</color>
+    <color name="oracle_error">#F44336</color>
+    <color name="oracle_surface">#252540</color>
+</resources>

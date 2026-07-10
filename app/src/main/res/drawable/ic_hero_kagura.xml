@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Kagura - Mage (Purple) -->
+    <circle
+        android:fillColor="#1A9C27B0"
+        android:centerX="32"
+        android:centerY="32"
+        android:radius="30dp" />
+    <!-- Body silhouette -->
+    <path
+        android:fillColor="#9C27B0"
+        android:pathData="M32,12 L26,20 L24,30 L22,40 L26,52 L30,56 L34,56 L38,52 L42,40 L40,30 L38,20 Z" />
+    <!-- Umbrella -->
+    <path
+        android:fillColor="#CE93D8"
+        android:pathData="M20,8 A16,12 0 0,1 44,8 L42,14 L22,14 Z" />
+    <path
+        android:strokeColor="#BA68C8"
+        android:strokeWidth="1.5"
+        android:pathData="M32,14 L32,20" />
+    <!-- Hair -->
+    <path
+        android:fillColor="#4A148C"
+        android:pathData="M24,16 L28,12 L32,14 L36,12 L40,16 L42,24 L38,20 L26,20 Z" />
+    <!-- Eye -->
+    <circle
+        android:fillColor="#FFFFFF"
+        android:centerX="30"
+        android:centerY="22"
+        android:radius="2.5dp" />
+    <circle
+        android:fillColor="#9C27B0"
+        android:centerX="30"
+        android:centerY="22"
+        android:radius="1.2dp" />
+    <!-- Ribbon -->
+    <path
+        android:fillColor="#F48FB1"
+        android:pathData="M22,18 L20,22 L24,20 Z" />
+</vector>

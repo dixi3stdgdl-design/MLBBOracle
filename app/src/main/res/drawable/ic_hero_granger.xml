@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Granger - Marksman (Blue) -->
+    <circle
+        android:fillColor="#1A2196F3"
+        android:centerX="32"
+        android:centerY="32"
+        android:radius="30dp" />
+    <!-- Body silhouette -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M32,12 L28,20 L24,28 L20,36 L22,48 L28,52 L36,52 L42,48 L44,36 L40,28 L36,20 Z" />
+    <!-- Gun -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:pathData="M42,28 L52,24 L54,26 L44,30 Z" />
+    <!-- Eye -->
+    <circle
+        android:fillColor="#FFFFFF"
+        android:centerX="30"
+        android:centerY="22"
+        android:radius="3dp" />
+    <circle
+        android:fillColor="#2196F3"
+        android:centerX="30"
+        android:centerY="22"
+        android:radius="1.5dp" />
+    <!-- Hat brim -->
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M22,18 L42,18 L44,20 L20,20 Z" />
+</vector>

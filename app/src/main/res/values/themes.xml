@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MLBBOrcle" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/oracle_darker</item>
+        <item name="android:navigationBarColor">@color/oracle_darker</item>
+        <item name="android:windowBackground">@color/oracle_darker</item>
+    </style>
+</resources>

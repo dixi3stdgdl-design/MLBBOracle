@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLBB Oracle Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            mlbb: {
+              red: '#E23744',
+              gold: '#FFD700',
+              dark: '#1A1A2E',
+              darker: '#0F0F1A',
+              card: '#16213E',
+              accent: '#E94560'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 50%, #16213E 100%);
+    }
+    
+    .title-font { font-family: 'Orbitron', monospace; }
+    
+    .glow-red { box-shadow: 0 0 20px rgba(226, 55, 68, 0.4); }
+    .glow-gold { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+    
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 40px rgba(226, 55, 68, 0.3);
+    }
+    
+    .tier-s { color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    .tier-a { color: #00FF88; }
+    .tier-b { color: #00BFFF; }
+    .tier-c { color: #FFA500; }
+    .tier-d { color: #FF4444; }
+    
+    .pulse-live {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .stat-bar {
+      background: linear-gradient(90deg, #E23744, #FFD700);
+      border-radius: 4px;
+      height: 8px;
+      transition: width 0.5s ease;
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1A1A2E; }
+    ::-webkit-scrollbar-thumb { background: #E23744; border-radius: 4px; }
+  </style>
+</head>
+<body class="min-h-screen text-white">
+  <!-- Header -->
+  <header class="bg-mlbb-darker/80 backdrop-blur-sm border-b border-mlbb-red/30 sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-gradient-to-br from-mlbb-red to-mlbb-gold rounded-lg flex items-center justify-center glow-red">
+            <span class="title-font text-xl font-black">MO</span>
+          </div>
+          <div>
+            <h1 class="title-font text-2xl font-bold bg-gradient-to-r from-mlbb-red to-mlbb-gold bg-clip-text text-transparent">
+              MLBB ORACLE
+            </h1>
+            <p class="text-xs text-gray-400">Advanced Analytics Dashboard</p>
+          </div>
+        </div>
+        <nav class="flex items-center gap-6">
+          <a href="#overview" class="text-gray-300 hover:text-mlbb-gold transition">Overview</a>
+          <a href="#heroes" class="text-gray-300 hover:text-mlbb-gold transition">Heroes</a>
+          <a href="#matches" class="text-gray-300 hover:text-mlbb-gold transition">Matches</a>
+          <a href="overlay-config.html" class="text-gray-300 hover:text-mlbb-gold transition">Overlay</a>
+          <div id="ws-status" class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-gray-500" id="ws-indicator"></div>
+            <span class="text-xs text-gray-400" id="ws-text">Offline</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+    <!-- Stats Overview -->
+    <section id="overview" class="mb-12">
+      <h2 class="title-font text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-mlbb-red rounded"></span>
+        Overview
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="stats-cards">
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-red/20 card-hover transition-all duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-gray-400 text-sm">Total Matches</span>
+            <span class="text-2xl">🎮</span>
+          </div>
+          <div class="text-3xl font-bold title-font" id="total-matches">--</div>
+          <div class="text-xs text-gray-500 mt-2">All time</div>
+        </div>
+        
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-gold/20 card-hover transition-all duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-gray-400 text-sm">Win Rate</span>
+            <span class="text-2xl">🏆</span>
+          </div>
+          <div class="text-3xl font-bold title-font text-mlbb-gold" id="win-rate">--%</div>
+          <div class="text-xs text-gray-500 mt-2">Overall</div>
+        </div>
+        
+        <div class="bg-mlbb-card rounded-xl p-6 border border-green-500/20 card-hover transition-all duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-gray-400 text-sm">Total Wins</span>
+            <span class="text-2xl">✨</span>
+          </div>
+          <div class="text-3xl font-bold title-font text-green-400" id="total-wins">--</div>
+          <div class="text-xs text-gray-500 mt-2">Victories</div>
+        </div>
+        
+        <div class="bg-mlbb-card rounded-xl p-6 border border-purple-500/20 card-hover transition-all duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-gray-400 text-sm">Heroes Tracked</span>
+            <span class="text-2xl">⚔️</span>
+          </div>
+          <div class="text-3xl font-bold title-font text-purple-400" id="heroes-tracked">--</div>
+          <div class="text-xs text-gray-500 mt-2">Unique heroes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Match Section -->
+    <section class="mb-12">
+      <h2 class="title-font text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-mlbb-red rounded"></span>
+        <span class="pulse-live text-mlbb-red">●</span>
+        Live Match Stream
+      </h2>
+      <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-red/30 glow-red">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-semibold">Real-time Updates</h3>
+          <button onclick="connectWebSocket()" class="px-4 py-2 bg-mlbb-red rounded-lg text-sm hover:bg-mlbb-accent transition">
+            Connect
+          </button>
+        </div>
+        <div id="live-feed" class="space-y-2 max-h-48 overflow-y-auto">
+          <div class="text-gray-500 text-center py-8">Waiting for live match data...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero Tier List -->
+    <section id="heroes" class="mb-12">
+      <h2 class="title-font text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-mlbb-gold rounded"></span>
+        Hero Tier List
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="hero-tiers">
+        <div class="text-gray-500 col-span-3 text-center py-8">Loading hero tiers...</div>
+      </div>
+    </section>
+
+    <!-- Match History -->
+    <section id="matches" class="mb-12">
+      <h2 class="title-font text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-mlbb-red rounded"></span>
+        Recent Matches
+      </h2>
+      <div class="bg-mlbb-card rounded-xl border border-mlbb-red/20 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-mlbb-darker">
+              <tr>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Hero</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Result</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Mode</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">KDA</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Gold</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Damage</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Duration</th>
+              </tr>
+            </thead>
+            <tbody id="matches-table" class="divide-y divide-mlbb-red/10">
+              <tr>
+                <td colspan="7" class="px-6 py-8 text-center text-gray-500">Loading matches...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meta Analysis -->
+    <section class="mb-12">
+      <h2 class="title-font text-xl font-bold mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 bg-mlbb-gold rounded"></span>
+        Meta Analysis
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Top Performing Heroes -->
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-gold/20">
+          <h3 class="font-semibold mb-4 flex items-center gap-2">
+            <span class="text-mlbb-gold">🏆</span> Top Performing Heroes
+          </h3>
+          <div id="top-heroes" class="space-y-3">
+            <div class="text-gray-500 text-center py-4">Loading...</div>
+          </div>
+        </div>
+        
+        <!-- Win Rates by Mode -->
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-red/20">
+          <h3 class="font-semibold mb-4 flex items-center gap-2">
+            <span class="text-mlbb-red">📊</span> Win Rates by Mode
+          </h3>
+          <div id="mode-stats" class="space-y-3">
+            <div class="text-gray-500 text-center py-4">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-mlbb-darker/80 border-t border-mlbb-red/20 py-6">
+    <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+      <p>MLBB Oracle © 2026 | Advanced Mobile Legends Analytics</p>
+    </div>
+  </footer>
+
+  <script>
+    const API_BASE = window.location.origin;
+    let ws = null;
+
+    // Format duration
+    function formatDuration(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Format number
+    function formatNumber(num) {
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+
+    // Get tier color class
+    function getTierClass(tier) {
+      return `tier-${tier.toLowerCase()}`;
+    }
+
+    // Load overview stats
+    async function loadStats() {
+      try {
+        const res = await fetch(`${API_BASE}/api/analytics/win-rates`);
+        const data = await res.json();
+        
+        document.getElementById('total-matches').textContent = data.overall.total || 0;
+        document.getElementById('win-rate').textContent = `${data.overall.win_rate || 0}%`;
+        document.getElementById('total-wins').textContent = data.overall.wins || 0;
+      } catch (err) {
+        console.error('Error loading stats:', err);
+      }
+    }
+
+    // Load hero tiers
+    async function loadHeroTiers() {
+      try {
+        const res = await fetch(`${API_BASE}/api/analytics/hero-tier`);
+        const heroes = await res.json();
+        
+        const container = document.getElementById('hero-tiers');
+        if (heroes.length === 0) {
+          container.innerHTML = '<div class="text-gray-500 col-span-3 text-center py-8">No hero data yet</div>';
+          return;
+        }
+
+        document.getElementById('heroes-tracked').textContent = heroes.length;
+        
+        container.innerHTML = heroes.slice(0, 12).map(hero => `
+          <div class="bg-mlbb-darker rounded-lg p-4 border border-gray-700/50 card-hover transition-all duration-300">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-mlbb-red/30 to-mlbb-gold/30 rounded-lg flex items-center justify-center">
+                  <span class="text-lg">⚔️</span>
+                </div>
+                <div>
+                  <div class="font-semibold">${hero.hero_name}</div>
+                  <div class="text-xs text-gray-400">${hero.total_matches} matches</div>
+                </div>
+              </div>
+              <span class="title-font text-2xl font-bold ${getTierClass(hero.tier)}">${hero.tier}</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div>
+                <div class="text-lg font-bold text-mlbb-gold">${hero.win_rate}%</div>
+                <div class="text-xs text-gray-500">Win Rate</div>
+              </div>
+              <div>
+                <div class="text-lg font-bold">${hero.avg_kda}</div>
+                <div class="text-xs text-gray-500">Avg KDA</div>
+              </div>
+              <div>
+                <div class="text-lg font-bold">${formatNumber(hero.avg_damage)}</div>
+                <div class="text-xs text-gray-500">Avg DMG</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Error loading hero tiers:', err);
+      }
+    }
+
+    // Load match history
+    async function loadMatches() {
+      try {
+        const res = await fetch(`${API_BASE}/api/matches?limit=15`);
+        const matches = await res.json();
+        
+        const tbody = document.getElementById('matches-table');
+        if (matches.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No matches yet</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = matches.map(match => `
+          <tr class="hover:bg-mlbb-darker/50 transition">
+            <td class="px-6 py-4 font-medium">${match.hero_name}</td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded text-xs font-semibold ${
+                match.result === 'win' 
+                  ? 'bg-green-500/20 text-green-400' 
+                  : 'bg-red-500/20 text-red-400'
+              }">
+                ${match.result.toUpperCase()}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-gray-400">${match.game_mode}</td>
+            <td class="px-6 py-4">
+              <span class="text-green-400">${match.kills}</span>/
+              <span class="text-red-400">${match.deaths}</span>/
+              <span class="text-yellow-400">${match.assists}</span>
+            </td>
+            <td class="px-6 py-4 text-mlbb-gold">${formatNumber(match.gold)}</td>
+            <td class="px-6 py-4">${formatNumber(match.damage)}</td>
+            <td class="px-6 py-4 text-gray-400">${formatDuration(match.duration)}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error('Error loading matches:', err);
+      }
+    }
+
+    // Load meta analysis
+    async function loadMetaAnalysis() {
+      try {
+        const res = await fetch(`${API_BASE}/api/analytics/meta-analysis`);
+        const data = await res.json();
+        
+        // Top heroes
+        const topContainer = document.getElementById('top-heroes');
+        if (data.topHeroes && data.topHeroes.length > 0) {
+          topContainer.innerHTML = data.topHeroes.slice(0, 8).map((hero, i) => `
+            <div class="flex items-center justify-between p-2 rounded hover:bg-mlbb-darker/50">
+              <div class="flex items-center gap-3">
+                <span class="text-gray-500 w-6">${i + 1}.</span>
+                <span class="font-medium">${hero.hero_name}</span>
+              </div>
+              <div class="flex items-center gap-4 text-sm">
+                <span class="text-mlbb-gold">${hero.win_rate}%</span>
+                <span class="text-gray-400">${hero.pick_rate} picks</span>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Mode stats
+        const modeContainer = document.getElementById('mode-stats');
+        if (data.topHeroes) {
+          const modes = {};
+          data.topHeroes.forEach(h => {
+            if (!modes[h.hero_name]) modes[h.hero_name] = 0;
+            modes[h.hero_name] += h.pick_rate;
+          });
+        }
+      } catch (err) {
+        console.error('Error loading meta analysis:', err);
+      }
+    }
+
+    // Load mode stats from win-rates endpoint
+    async function loadModeStats() {
+      try {
+        const res = await fetch(`${API_BASE}/api/analytics/win-rates`);
+        const data = await res.json();
+        
+        const container = document.getElementById('mode-stats');
+        if (data.byMode && data.byMode.length > 0) {
+          container.innerHTML = data.byMode.map(mode => `
+            <div class="p-3 rounded bg-mlbb-darker/50">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-medium">${mode.game_mode}</span>
+                <span class="text-mlbb-gold font-bold">${mode.win_rate}%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="stat-bar" style="width: ${mode.win_rate}%"></div>
+              </div>
+              <div class="text-xs text-gray-500 mt-1">${mode.wins}W / ${mode.total - mode.wins}L</div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = '<div class="text-gray-500 text-center py-4">No mode data</div>';
+        }
+      } catch (err) {
+        console.error('Error loading mode stats:', err);
+      }
+    }
+
+    // WebSocket connection
+    function connectWebSocket() {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+        return;
+      }
+
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(`${protocol}//${window.location.host}/ws/live`);
+
+      ws.onopen = () => {
+        document.getElementById('ws-indicator').className = 'w-2 h-2 rounded-full bg-green-500 pulse-live';
+        document.getElementById('ws-text').textContent = 'Connected';
+        addLiveMessage('Connected to live stream', 'success');
+      };
+
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'match_update') {
+          addLiveMessage(`${data.data.hero}: ${data.data.kills}/${data.data.deaths}/${data.data.assists}`, 'live');
+        }
+      };
+
+      ws.onclose = () => {
+        document.getElementById('ws-indicator').className = 'w-2 h-2 rounded-full bg-gray-500';
+        document.getElementById('ws-text').textContent = 'Offline';
+        addLiveMessage('Disconnected from live stream', 'info');
+      };
+    }
+
+    function addLiveMessage(message, type = 'info') {
+      const feed = document.getElementById('live-feed');
+      const colors = {
+        live: 'border-l-4 border-mlbb-red',
+        success: 'border-l-4 border-green-500',
+        info: 'border-l-4 border-blue-500'
+      };
+      
+      const div = document.createElement('div');
+      div.className = `p-3 rounded bg-mlbb-darker/50 ${colors[type] || ''} text-sm`;
+      div.innerHTML = `
+        <span class="text-gray-500 text-xs">${new Date().toLocaleTimeString()}</span>
+        <span class="ml-2">${message}</span>
+      `;
+      feed.prepend(div);
+      
+      // Keep only last 20 messages
+      while (feed.children.length > 20) {
+        feed.removeChild(feed.lastChild);
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadStats();
+      loadHeroTiers();
+      loadMatches();
+      loadMetaAnalysis();
+      loadModeStats();
+    });
+
+    // Refresh every 30 seconds
+    setInterval(() => {
+      loadStats();
+      loadHeroTiers();
+      loadMatches();
+    }, 30000);
+  </script>
+</body>
+</html>

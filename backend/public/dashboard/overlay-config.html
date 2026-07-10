@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLBB Oracle - Overlay Configuration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            mlbb: {
+              red: '#E23744',
+              gold: '#FFD700',
+              dark: '#1A1A2E',
+              darker: '#0F0F1A',
+              card: '#16213E',
+              accent: '#E94560'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 50%, #16213E 100%);
+    }
+    
+    .title-font { font-family: 'Orbitron', monospace; }
+    
+    .preview-box {
+      background: linear-gradient(135deg, #2a1a1a 0%, #1a2a1a 100%);
+      border: 2px dashed rgba(226, 55, 68, 0.3);
+    }
+    
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 24px;
+      background: #374151;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .toggle-switch.active {
+      background: #E23744;
+    }
+    
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    
+    .toggle-switch.active::after {
+      transform: translateX(24px);
+    }
+    
+    .color-picker {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-white">
+  <!-- Header -->
+  <header class="bg-mlbb-darker/80 backdrop-blur-sm border-b border-mlbb-red/30">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-gradient-to-br from-mlbb-red to-mlbb-gold rounded-lg flex items-center justify-center">
+            <span class="title-font text-xl font-black">MO</span>
+          </div>
+          <div>
+            <h1 class="title-font text-2xl font-bold bg-gradient-to-r from-mlbb-red to-mlbb-gold bg-clip-text text-transparent">
+              OVERLAY CONFIG
+            </h1>
+            <p class="text-xs text-gray-400">Customize your in-game overlay</p>
+          </div>
+        </div>
+        <a href="index.html" class="px-4 py-2 bg-mlbb-card rounded-lg border border-mlbb-red/30 hover:bg-mlbb-red/20 transition">
+          ← Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Configuration Panel -->
+      <div class="space-y-6">
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-red/20">
+          <h2 class="title-font text-lg font-bold mb-6 flex items-center gap-2">
+            <span class="w-1 h-5 bg-mlbb-red rounded"></span>
+            Overlay Settings
+          </h2>
+
+          <!-- Position -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-300 mb-3">Position</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="top-left">Top Left</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="top-center">Top Center</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="top-right">Top Right</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="mid-left">Mid Left</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="center">Center</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="mid-right">Mid Right</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="bot-left">Bot Left</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red transition" data-pos="bot-center">Bot Center</button>
+              <button class="pos-btn px-4 py-2 rounded bg-mlbb-darker border border-gray-600 hover:border-mlbb-red border-mlbb-red bg-mlbb-red/20 transition" data-pos="bot-right">Bot Right</button>
+            </div>
+          </div>
+
+          <!-- Opacity -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-300 mb-3">
+              Opacity: <span id="opacity-value">80</span>%
+            </label>
+            <input type="range" id="opacity" min="20" max="100" value="80" 
+              class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-mlbb-red">
+          </div>
+
+          <!-- Scale -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-300 mb-3">
+              Scale: <span id="scale-value">100</span>%
+            </label>
+            <input type="range" id="scale" min="50" max="200" value="100" 
+              class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-mlbb-red">
+          </div>
+
+          <!-- Colors -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-300 mb-3">Colors</label>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="flex items-center gap-3">
+                <input type="color" id="primary-color" value="#E23744" class="color-picker">
+                <span class="text-sm">Primary</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="color" id="secondary-color" value="#FFD700" class="color-picker">
+                <span class="text-sm">Secondary</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="color" id="bg-color" value="#1A1A2E" class="color-picker">
+                <span class="text-sm">Background</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="color" id="text-color" value="#FFFFFF" class="color-picker">
+                <span class="text-sm">Text</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display Options -->
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-red/20">
+          <h2 class="title-font text-lg font-bold mb-6 flex items-center gap-2">
+            <span class="w-1 h-5 bg-mlbb-gold rounded"></span>
+            Display Options
+          </h2>
+
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-3 rounded bg-mlbb-darker/50">
+              <div>
+                <div class="font-medium">Show KDA</div>
+                <div class="text-xs text-gray-400">Display kills/deaths/assists</div>
+              </div>
+              <div class="toggle-switch active" id="toggle-kda" onclick="toggleOption(this)"></div>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded bg-mlbb-darker/50">
+              <div>
+                <div class="font-medium">Show Gold</div>
+                <div class="text-xs text-gray-400">Display current gold</div>
+              </div>
+              <div class="toggle-switch active" id="toggle-gold" onclick="toggleOption(this)"></div>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded bg-mlbb-darker/50">
+              <div>
+                <div class="font-medium">Show Damage</div>
+                <div class="text-xs text-gray-400">Display damage dealt</div>
+              </div>
+              <div class="toggle-switch active" id="toggle-damage" onclick="toggleOption(this)"></div>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded bg-mlbb-darker/50">
+              <div>
+                <div class="font-medium">Show CS</div>
+                <div class="text-xs text-gray-400">Display creep score</div>
+              </div>
+              <div class="toggle-switch" id="toggle-cs" onclick="toggleOption(this)"></div>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded bg-mlbb-darker/50">
+              <div>
+                <div class="font-medium">Show Items</div>
+                <div class="text-xs text-gray-400">Display equipped items</div>
+              </div>
+              <div class="toggle-switch active" id="toggle-items" onclick="toggleOption(this)"></div>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded bg-mlbb-darker/50">
+              <div>
+                <div class="font-medium">Show Win Rate</div>
+                <div class="text-xs text-gray-400">Display hero win rate</div>
+              </div>
+              <div class="toggle-switch active" id="toggle-winrate" onclick="toggleOption(this)"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-4">
+          <button onclick="saveConfig()" class="flex-1 px-6 py-3 bg-gradient-to-r from-mlbb-red to-mlbb-accent rounded-lg font-semibold hover:opacity-90 transition">
+            Save Configuration
+          </button>
+          <button onclick="resetConfig()" class="px-6 py-3 bg-mlbb-darker rounded-lg border border-gray-600 hover:border-mlbb-red transition">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Panel -->
+      <div class="space-y-6">
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-red/20">
+          <h2 class="title-font text-lg font-bold mb-6 flex items-center gap-2">
+            <span class="w-1 h-5 bg-mlbb-gold rounded"></span>
+            Live Preview
+          </h2>
+
+          <div class="preview-box rounded-lg p-8 min-h-96 relative" id="preview-container">
+            <!-- Overlay Preview -->
+            <div id="overlay-preview" class="absolute bottom-4 right-4 p-3 rounded-lg" 
+              style="background: rgba(26, 26, 46, 0.8); border: 1px solid rgba(226, 55, 68, 0.5);">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 bg-mlbb-red/30 rounded flex items-center justify-center">
+                  <span class="text-sm">⚔️</span>
+                </div>
+                <div>
+                  <div class="font-bold text-sm" id="preview-hero">Chou</div>
+                  <div class="text-xs text-gray-400" id="preview-mode">Ranked</div>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-3 gap-2 text-center text-xs" id="preview-stats">
+                <div class="bg-black/30 rounded p-1">
+                  <div class="text-green-400 font-bold" id="preview-kills">8</div>
+                  <div class="text-gray-500">K</div>
+                </div>
+                <div class="bg-black/30 rounded p-1">
+                  <div class="text-red-400 font-bold" id="preview-deaths">2</div>
+                  <div class="text-gray-500">D</div>
+                </div>
+                <div class="bg-black/30 rounded p-1">
+                  <div class="text-yellow-400 font-bold" id="preview-assists">12</div>
+                  <div class="text-gray-500">A</div>
+                </div>
+              </div>
+              
+              <div class="mt-2 text-xs text-center" id="preview-gold">
+                <span class="text-mlbb-gold">💰 12,500</span>
+              </div>
+            </div>
+
+            <!-- Game-like background -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="text-center text-gray-600">
+                <div class="text-6xl mb-4">🎮</div>
+                <div class="text-lg">Game Screen Preview</div>
+                <div class="text-sm">Overlay appears in corner</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="bg-mlbb-card rounded-xl p-6 border border-mlbb-red/20">
+          <h2 class="title-font text-lg font-bold mb-4 flex items-center gap-2">
+            <span class="w-1 h-5 bg-mlbb-red rounded"></span>
+            Export
+          </h2>
+          <div class="space-y-3">
+            <button onclick="exportConfig('json')" class="w-full px-4 py-2 bg-mlbb-darker rounded-lg border border-gray-600 hover:border-mlbb-red text-left transition">
+              📄 Export as JSON
+            </button>
+            <button onclick="exportConfig('android')" class="w-full px-4 py-2 bg-mlbb-darker rounded-lg border border-gray-600 hover:border-mlbb-red text-left transition">
+              📱 Copy Android Config
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let config = {
+      position: 'bot-right',
+      opacity: 80,
+      scale: 100,
+      colors: {
+        primary: '#E23744',
+        secondary: '#FFD700',
+        background: '#1A1A2E',
+        text: '#FFFFFF'
+      },
+      display: {
+        kda: true,
+        gold: true,
+        damage: true,
+        cs: false,
+        items: true,
+        winrate: true
+      }
+    };
+
+    function toggleOption(el) {
+      el.classList.toggle('active');
+      updateConfig();
+      updatePreview();
+    }
+
+    function updateConfig() {
+      config.opacity = parseInt(document.getElementById('opacity').value);
+      config.scale = parseInt(document.getElementById('scale').value);
+      config.colors.primary = document.getElementById('primary-color').value;
+      config.colors.secondary = document.getElementById('secondary-color').value;
+      config.colors.background = document.getElementById('bg-color').value;
+      config.colors.text = document.getElementById('text-color').value;
+      
+      config.display.kda = document.getElementById('toggle-kda').classList.contains('active');
+      config.display.gold = document.getElementById('toggle-gold').classList.contains('active');
+      config.display.damage = document.getElementById('toggle-damage').classList.contains('active');
+      config.display.cs = document.getElementById('toggle-cs').classList.contains('active');
+      config.display.items = document.getElementById('toggle-items').classList.contains('active');
+      config.display.winrate = document.getElementById('toggle-winrate').classList.contains('active');
+    }
+
+    function updatePreview() {
+      const preview = document.getElementById('overlay-preview');
+      const scale = config.scale / 100;
+      
+      preview.style.opacity = config.opacity / 100;
+      preview.style.transform = `scale(${scale})`;
+      preview.style.borderColor = config.colors.primary;
+      preview.style.background = `rgba(${hexToRgb(config.colors.background)}, 0.8)`;
+
+      // Update position
+      const positions = {
+        'top-left': { top: '1rem', left: '1rem', bottom: 'auto', right: 'auto' },
+        'top-center': { top: '1rem', left: '50%', transform: `scale(${scale}) translateX(-50%)`, bottom: 'auto', right: 'auto' },
+        'top-right': { top: '1rem', right: '1rem', bottom: 'auto', left: 'auto' },
+        'mid-left': { top: '50%', left: '1rem', transform: `scale(${scale}) translateY(-50%)`, bottom: 'auto', right: 'auto' },
+        'center': { top: '50%', left: '50%', transform: `scale(${scale}) translate(-50%, -50%)`, bottom: 'auto', right: 'auto' },
+        'mid-right': { top: '50%', right: '1rem', transform: `scale(${scale}) translateY(-50%)`, bottom: 'auto', left: 'auto' },
+        'bot-left': { bottom: '1rem', left: '1rem', top: 'auto', right: 'auto' },
+        'bot-center': { bottom: '1rem', left: '50%', transform: `scale(${scale}) translateX(-50%)`, top: 'auto', right: 'auto' },
+        'bot-right': { bottom: '1rem', right: '1rem', top: 'auto', left: 'auto' }
+      };
+
+      const pos = positions[config.position];
+      Object.assign(preview.style, pos);
+
+      // Update stats visibility
+      document.getElementById('preview-stats').style.display = config.display.kda ? 'grid' : 'none';
+      document.getElementById('preview-gold').style.display = config.display.gold ? 'block' : 'none';
+    }
+
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '26, 26, 46';
+    }
+
+    function saveConfig() {
+      updateConfig();
+      localStorage.setItem('mlbb-overlay-config', JSON.stringify(config));
+      
+      // Show success message
+      const btn = event.target;
+      const originalText = btn.textContent;
+      btn.textContent = '✓ Saved!';
+      btn.classList.add('bg-green-600');
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('bg-green-600');
+      }, 2000);
+    }
+
+    function resetConfig() {
+      config = {
+        position: 'bot-right',
+        opacity: 80,
+        scale: 100,
+        colors: { primary: '#E23744', secondary: '#FFD700', background: '#1A1A2E', text: '#FFFFFF' },
+        display: { kda: true, gold: true, damage: true, cs: false, items: true, winrate: true }
+      };
+      
+      document.getElementById('opacity').value = 80;
+      document.getElementById('scale').value = 100;
+      document.getElementById('opacity-value').textContent = '80';
+      document.getElementById('scale-value').textContent = '100';
+      document.getElementById('primary-color').value = '#E23744';
+      document.getElementById('secondary-color').value = '#FFD700';
+      document.getElementById('bg-color').value = '#1A1A2E';
+      document.getElementById('text-color').value = '#FFFFFF';
+      
+      updatePreview();
+    }
+
+    function exportConfig(format) {
+      updateConfig();
+      
+      if (format === 'json') {
+        const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'mlbb-overlay-config.json';
+        a.click();
+      } else if (format === 'android') {
+        const androidConfig = `// MLBB Oracle Overlay Config
+object OverlayConfig {
+    const val POSITION = "${config.position}"
+    const val OPACITY = ${config.opacity}
+    const val SCALE = ${config.scale}
+    const val PRIMARY_COLOR = "${config.colors.primary}"
+    const val SECONDARY_COLOR = "${config.colors.secondary}"
+    const val BG_COLOR = "${config.colors.background}"
+    const val TEXT_COLOR = "${config.colors.text}"
+    const val SHOW_KDA = ${config.display.kda}
+    const val SHOW_GOLD = ${config.display.gold}
+    const val SHOW_DAMAGE = ${config.display.damage}
+    const val SHOW_CS = ${config.display.cs}
+    const val SHOW_ITEMS = ${config.display.items}
+    const val SHOW_WINRATE = ${config.display.winrate}
+}`;
+        navigator.clipboard.writeText(androidConfig);
+        alert('Android config copied to clipboard!');
+      }
+    }
+
+    // Load saved config
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('mlbb-overlay-config');
+      if (saved) {
+        config = JSON.parse(saved);
+        document.getElementById('opacity').value = config.opacity;
+        document.getElementById('scale').value = config.scale;
+        document.getElementById('opacity-value').textContent = config.opacity;
+        document.getElementById('scale-value').textContent = config.scale;
+        document.getElementById('primary-color').value = config.colors.primary;
+        document.getElementById('secondary-color').value = config.colors.secondary;
+        document.getElementById('bg-color').value = config.colors.background;
+        document.getElementById('text-color').value = config.colors.text;
+        
+        Object.keys(config.display).forEach(key => {
+          const el = document.getElementById(`toggle-${key}`);
+          if (el) {
+            if (config.display[key]) el.classList.add('active');
+            else el.classList.remove('active');
+          }
+        });
+      }
+      updatePreview();
+    });
+
+    // Range input handlers
+    document.getElementById('opacity').addEventListener('input', (e) => {
+      document.getElementById('opacity-value').textContent = e.target.value;
+      updatePreview();
+    });
+
+    document.getElementById('scale').addEventListener('input', (e) => {
+      document.getElementById('scale-value').textContent = e.target.value;
+      updatePreview();
+    });
+
+    // Color input handlers
+    ['primary-color', 'secondary-color', 'bg-color', 'text-color'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updatePreview);
+    });
+
+    // Position buttons
+    document.querySelectorAll('.pos-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.pos-btn').forEach(b => {
+          b.classList.remove('border-mlbb-red', 'bg-mlbb-red/20');
+        });
+        btn.classList.add('border-mlbb-red', 'bg-mlbb-red/20');
+        config.position = btn.dataset.pos;
+        updatePreview();
+      });
+    });
+  </script>
+</body>
+</html>

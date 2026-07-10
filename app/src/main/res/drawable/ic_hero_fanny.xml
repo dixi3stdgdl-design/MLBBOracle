@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Fanny - Assassin (Red) -->
+    <circle
+        android:fillColor="#1AE53935"
+        android:centerX="32"
+        android:centerY="32"
+        android:radius="30dp" />
+    <!-- Body silhouette -->
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M32,10 L26,18 L22,28 L20,38 L24,50 L30,54 L34,54 L40,50 L44,38 L42,28 L38,18 Z" />
+    <!-- Cables -->
+    <path
+        android:strokeColor="#EF9A9A"
+        android:strokeWidth="1.5"
+        android:pathData="M22,22 L8,12 M42,22 L56,12" />
+    <!-- Hair -->
+    <path
+        android:fillColor="#B71C1C"
+        android:pathData="M24,14 L28,10 L32,12 L36,10 L40,14 L38,18 L34,16 L30,16 L26,18 Z" />
+    <!-- Eye -->
+    <circle
+        android:fillColor="#FFFFFF"
+        android:centerX="30"
+        android:centerY="22"
+        android:radius="2.5dp" />
+    <circle
+        android:fillColor="#E53935"
+        android:centerX="30"
+        android:centerY="22"
+        android:radius="1.2dp" />
+    <!-- Daggers -->
+    <path
+        android:fillColor="#FFCDD2"
+        android:pathData="M18,30 L14,26 L16,24 L20,28 Z" />
+    <path
+        android:fillColor="#FFCDD2"
+        android:pathData="M46,30 L50,26 L48,24 L44,28 Z" />
+</vector>

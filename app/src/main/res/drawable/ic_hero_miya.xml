@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Miya - Marksman (Blue) -->
+    <circle
+        android:fillColor="#1A2196F3"
+        android:centerX="32"
+        android:centerY="32"
+        android:radius="30dp" />
+    <!-- Body silhouette -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M32,14 L26,22 L24,32 L22,42 L26,52 L30,56 L34,56 L38,52 L42,42 L40,32 L38,22 Z" />
+    <!-- Bow -->
+    <path
+        android:strokeColor="#BBDEFB"
+        android:strokeWidth="2"
+        android:pathData="M44,16 Q56,32 44,48" />
+    <path
+        android:strokeColor="#E3F2FD"
+        android:strokeWidth="1"
+        android:pathData="M44,16 L44,48" />
+    <!-- Hair -->
+    <path
+        android:fillColor="#0D47A1"
+        android:pathData="M22,18 Q24,10 32,12 Q40,10 42,18 L44,30 L40,24 L24,24 L20,30 Z" />
+    <!-- Eye -->
+    <circle
+        android:fillColor="#FFFFFF"
+        android:centerX="30"
+        android:centerY="24"
+        android:radius="2.5dp" />
+    <circle
+        android:fillColor="#2196F3"
+        android:centerX="30"
+        android:centerY="24"
+        android:radius="1.2dp" />
+    <!-- Moon symbol -->
+    <path
+        android:fillColor="#E8EAF6"
+        android:pathData="M28,16 A4,4 0 1,1 36,16 A3,3 0 1,0 28,16 Z" />
+</vector>
