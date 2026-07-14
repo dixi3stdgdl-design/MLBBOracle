@@ -82,8 +82,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // CameraX (for alternative capture method)
-    implementation("androidx.camera:camera-core:1.4.1")
-    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.camera:camera-core:1.6.1")
+    implementation("androidx.camera:camera-camera2:1.6.1")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
